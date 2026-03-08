@@ -1,3 +1,5 @@
+import { Button, VerticalBox, ScrollView } from "std-widgets.slint";
+
 export struct DayData {
   date: string,
   day: int,
@@ -6,6 +8,88 @@ export struct DayData {
   holiday_text: string,
 }
 
-export component CalendarApp inherits Window {
-    in property <[DayData]> days_model;
+export struct CalendarCell {
+  day_number: string,
+  is_today: bool,
+  is_weekend: bool,
+  is_holiday: bool,
+  is_current_month: bool,
+  has_events: bool,
+}
+
+export struct DateInfo {
+  weekday: string,
+  year: string,
+  month: string,
+  day: string,
+}
+
+export component Calendar inherits Window {
+    in property <[CalendarCell]> days;
+    in property <DateInfo> active_date;
+    VerticalBox {
+        alignment: start;
+
+        // Header
+        Text {
+            text: active_date.month + " " + active_date.year;
+            font-size: 24px;
+            horizontal-alignment: center;
+            padding-top: 20px;
+        }
+
+        // Days
+        HorizontalLayout {
+            height: 30px;
+            for day_name in ["S", "M", "T", "W", "T", "F", "S"]: Text {
+                text: day_name;
+                horizontal-alignment: center;
+                width: 1 / 7 * parent.width;
+                color: gray;
+            }
+        }
+
+        // Grid
+        Rectangle {
+            background: #f0f0f0;
+            VerticalLayout {
+                for row in 6: HorizontalLayout {
+                    for col in 7: Rectangle {
+                        // Calculate index: (row * 7) + col
+                        property <CalendarCell> cell_data: days[row * 7 + col];
+
+                        width: 1 / 7 * parent.width;
+                        height: 60px; // Adjust for your Android screen aspect ratio
+                        border-width: 0.5px;
+                        border-color: #ccc;
+                        background: cell_data.is_today ? #e1f5fe : white;
+
+                        // The Date Number (Top Right)
+                        Text {
+                            text: cell_data.day_number;
+                            x: parent.width - self.width - 4px;
+                            y: 4px;
+                            font-size: 14px;
+                            color: cell_data.is_current_month ? (cell_data.is_weekend ? red : black) : #bbb;
+                        }
+
+                        // Event Indicator (Small dot)
+                        if (cell_data.has_events): Rectangle {
+                            width: 6px;
+                            height: 6px;
+                            border-radius: 3px;
+                            background: blue;
+                            y: parent.height - 12px;
+                            x: (parent.width / 2) - 3px;
+                        }
+
+                        // Touch area for interaction
+                        TouchArea {
+                            clicked => { /* Trigger Rust logic to show events for this date */ }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

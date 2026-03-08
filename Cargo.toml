@@ -9,7 +9,8 @@ crate-type = ["cdylib"]
 [dependencies]
 slint = { version = "1.9", features = ["backend-android-activity-06"] }
 tokio = { version = "1", features = ["full"] }
-sqlx = { sqlx = { version = "0.7.0", features = ["runtime-tokio", "sqlite"] }
+sqlx = { version = "0.7.0", features = ["runtime-tokio", "sqlite"] }
+chrono = "0.4"
 
 [build-dependencies]
 slint-build = "1.9"
