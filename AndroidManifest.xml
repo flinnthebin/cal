@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.archer.cal">
+    <application android:label="cal" android:hasCode="false">
+        </application>
+</manifest>

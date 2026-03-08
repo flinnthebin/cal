@@ -1,0 +1,23 @@
+[package]
+name = "cal"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+slint = { version = "1.9", features = ["backend-android-activity-06"] }
+tokio = { version = "1", features = ["full"] }
+sqlx = { sqlx = { version = "0.7.0", features = ["runtime-tokio", "sqlite"] }
+
+[build-dependencies]
+slint-build = "1.9"
+
+[package.metadata.android]
+build_targets = ["aarch64-linux-android"]
+target_sdk_version = 35
+min_sdk_version = 26
+src_path = "java_src"
+sdk_path = "/opt/android-sdk"
+ndk_path = "/opt/android-ndk"

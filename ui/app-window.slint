@@ -1,0 +1,11 @@
+export struct DayData {
+  date: string,
+  day: int,
+  is_weekend: bool,
+  is_holiday: bool,
+  holiday_text: string,
+}
+
+export component CalendarApp inherits Window {
+    in property <[DayData]> days_model;
+}
